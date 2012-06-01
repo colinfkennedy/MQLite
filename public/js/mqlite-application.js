@@ -1,5 +1,6 @@
 Y_Main.use('app', 'handlebars', function(Y){	
 	var _compileTemplate = Y.Handlebars.compile, 
+		MQ_DATA = MQ_DATA || {},
 		_templates = {
 		searchResults: _compileTemplate(['<ul>',
                                              '{{#each results}}',
@@ -68,10 +69,10 @@ Y_Main.use('app', 'handlebars', function(Y){
 	            ]
 	        }, 
 	        search: {
-	            value: MQ_DATA.search
+	            value: MQ_DATA && MQ_DATA.search
 	        }, 
 	        route: {
-	            value: MQ_DATA.route
+	            value: MQ_DATA && MQ_DATA.route
 	        }, 
 	        activeInput: {
 	            value: Y.one('#lhp-content form > input:nth-child(1)')

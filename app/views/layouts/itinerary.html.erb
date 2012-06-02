@@ -9,8 +9,45 @@
 		<%= stylesheet_link_tag  "application", :media => "all" %>
 	</head>
     <body class="yui3-skin-night <%= @current_controller %>-controller <%= @current_action %>-action">
-    	<div id="itinerary">Itinerary</div>
-    	<div id="map"></div>	
+    	<div id="header">Mapquest Itinerary</div>
+    	<div id="content" class="row-fluid">
+	    	<div id="itinerary" class="span8">
+	    		<div id="datesAndStops" class="row-fluid">
+	    			<div class="row-fluid date">
+			    		<div class="span2 dateTitle">
+			    			1st of June
+			    		</div>
+			    		<div class="span10 stops">
+			    			<div class="stop">
+			    				A: Dublin
+			    			</div>
+			    			<div class="stop">
+			    				B: Cavan
+			    			</div>
+			    		</div>
+		    		</div>
+		    		<div class="row-fluid date">
+			    		<div class="span2 dateTitle">
+			    			2nd of June
+			    		</div>
+			    		<div class="span10 stops">
+			    			<div class="stop">
+			    				C: Donegal
+			    			</div>
+			    			<div class="stop">
+			    				D: Derry
+			    			</div>
+			    			<div class="stop">
+			    				E: Belfast
+			    			</div>
+			    		</div>
+		    		</div>
+		    		<button id="addDay" class="btn btn-inverse">Add Day</button>
+		    		<button id="addStop" class="btn btn-inverse">Add Stop</button>
+	    		</div>
+	    	</div>
+	    	<div class="span4" id="map"></div>	
+    	</div>
 		<script src="/yui/build/yui/yui.js"></script>
 		<script src="/jquery-1.7.2.min.js"></script>
 		<script src="/bootstrap/js/bootstrap.js"></script>

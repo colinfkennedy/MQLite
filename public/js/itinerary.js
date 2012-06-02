@@ -13,8 +13,8 @@ function(Y){
         var drag = e.drag.get('node'),
             drop = e.drop.get('node');
         
-        //Are we dropping on a li node?
-        if (drop.get('tagName').toLowerCase() === 'li') {
+        //Are we dropping on another stop?
+        if (drop.hasClass('stop')) {
             //Are we not going up?
             if (!goingUp) {
                 drop = drop.get('nextSibling');
@@ -68,7 +68,7 @@ function(Y){
             drag = e.drag.get('node');
 
         //if we are not on an li, we must have been dropped on a ul
-        if (drop.get('tagName').toLowerCase() !== 'li') {
+        if (!drop.hasClass('stop')) {
             if (!drop.contains(drag)) {
                 drop.appendChild(drag);
             }
@@ -78,7 +78,7 @@ function(Y){
     //Static Vars
     var goingUp = false, lastY = 0;
 
-    //Get the list of li's in the lists and make them draggable
+    //Get the list of stops in the lists and make them draggable
     var lis = Y.Node.all('#datesAndStops .date .stops .stop');
     lis.each(function(v, k) {
         var dd = new Y.DD.Drag({

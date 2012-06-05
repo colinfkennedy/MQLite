@@ -2,6 +2,23 @@ html, body {
     height: 100%;
 }
 
+body {
+	background: url('/images/linen.png') repeat fixed
+}
+
+.itinerary-content {
+}
+
+.no-border-input {
+	border: 0;
+	padding: 0 8px;
+	margin: 5px;
+}
+
+div.dateTitle {
+	padding: 5px;
+}
+
 .rounded-corners (@radius: 5px) {
   border-radius: @radius;
   -webkit-border-radius: @radius;
@@ -10,6 +27,12 @@ html, body {
 
 div#header {
   height: 30px;
+  padding: 15px;
+}
+div#header h3,
+div#header h2, {
+	font-family: Righteous, inherit;
+	color: lightSlateGrey;
 }
 
 div#content,
@@ -18,18 +41,22 @@ div#date,
 div#stops,
 div#itinerary {
   height: 100%;
+  padding: 5px;
 }
 
 .date,
 .stop{
     height: 100%;
-    border: 1px solid black;
     .rounded-corners;
+    border: 1px solid lightBlue;
+    margin-bottom: 10px;
 }
 
 .stop{
-  margin:5px;
-  height:40px;
+	background-color: white;
+    height: 31px;
+    margin: 5px;
+    padding: 5px;
 }
 
 .btn {
@@ -38,7 +65,7 @@ div#itinerary {
 }
 
 div#map {
-    height: 100%;
+    height: 600px;
     
     img {
       max-width: none; /* Fix for boostrap breaking maps on FF */

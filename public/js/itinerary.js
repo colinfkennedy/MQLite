@@ -1,16 +1,52 @@
 Y_Main.use(
 'mqlite-map',
+'calendar',
 'itinerary-drag-and-drop',
 'util',
 function(Y){
-	
 	"use strict";	
-	
+	var addDayButton = Y.one('button#addDay'),
+		calendarDiv = Y.one('#calendar'),
+		calendar;
     //Event Handler
-    Y.one('button#addDay').on('click', function(){
-		Y.Util.renderTemplate('date.html', null, function(html){
-			Y.one('#itinerary').insert(html);
-		});
+    addDayButton.on('click', function(){
+		
+		if(calendar){
+			//If we already have a calendar, show it.
+			calendar.show();
+		}else{
+			//Initialise
+			calendar = new Y.Calendar({
+	          contentBox: "#calendar",
+	          width:'200px',
+	          showPrevMonth: false,
+	          showNextMonth: true,
+	          date: new Date()}).render();
+	          
+	          
+	        // Get a reference to Y.DataType.Date
+	    	var dtdate = Y.DataType.Date;
+	        
+	        // Listen to calendar's selectionChange event.
+		    calendar.on("selectionChange", function (ev) {
+		
+		      	// Get the date from the list of selected
+		      	// dates returned with the event (since only
+		      	// single selection is enabled by default,
+		      	// we expect there to be only one date)
+		      	var newDate = ev.newSelection[0];
+		
+		      	// Format the date and output it to a DOM
+		     	// element.
+		     	newDate = dtdate.format(newDate, {format: "%d %B"});
+		      
+		      	Y.Util.renderTemplate('date.html', {date: newDate}, function(html){
+					Y.one('#itinerary').insertBefore(html, Y.one('#addDateAndCalendar'));
+				});
+				
+				calendar.hide();
+		    });
+		}		
     });
     
 	$('.delete-link').tooltip();

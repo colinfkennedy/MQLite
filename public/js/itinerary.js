@@ -61,7 +61,7 @@ function(Y){
     
     //Add Stop Button
     Y.one('button#addStop').on('click', function(){
-    	Y.one('input#addStopInput').show();    	
+    	Y.one('input#addStopInput').show(); 	
     });
     
     //Add key events to the Add Stop Input Box
@@ -108,6 +108,9 @@ function(Y){
     	
     	//Remove the results
     	Y.one('#itinerary-search-results').get('childNodes').remove(true);
+    	
+    	//Hide the results box
+    	Y.one('#itinerary-search-results-container').hide();   
     	
     }, 'li');
         

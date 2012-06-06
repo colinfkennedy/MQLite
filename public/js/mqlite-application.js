@@ -4,7 +4,7 @@ Y_Main.use('app', 'handlebars', function(Y){
 		_templates = {
 		searchResults: _compileTemplate(['<ul>',
                                              '{{#each results}}',
-                                                 '<li id="place_id_{{place_id}}">',
+                                                 '<li class="searchResult" id="place_id_{{place_id}}">',
                                                       '{{display_name}}',
                                                  '</li>',
                                              '{{/each}}',
@@ -54,6 +54,7 @@ Y_Main.use('app', 'handlebars', function(Y){
 	    	 			});
 	    	 			
 	    	 			Y.one("#itinerary-search-results").setHTML(html);
+	    	 			Y.one('#itinerary-search-results-container').show();
 	    	 		}
 	    	 	}
 	    	 });	    	

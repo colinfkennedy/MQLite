@@ -156,7 +156,6 @@ function(Y){
 	var locations = [],
 	
 		handleResult = function(data) {
-			alert(data);
 		},
 	
 		drawRoute = function(locations) {

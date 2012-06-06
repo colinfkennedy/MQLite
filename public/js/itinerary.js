@@ -10,7 +10,17 @@ function(Y){
 		addDayButton = Y.one('button#addDay'),
 		calendarDiv = Y.one('#calendar'),
 		calendar,
-		stopCount = 5;
+		dateCount = 2,
+		stopCount = 5,
+		letters = {
+			1:'A',
+			2:'B',
+			3:'C',
+			4:'D',
+			5:'E',
+			6:'F',
+			7:'G'
+		};
 				
     //Event Handler
     addDayButton.on('click', function(){
@@ -81,8 +91,11 @@ function(Y){
             
     	//Add it to the list    	
     	var lastDateStopsList = Y.all('.stops').pop();
+    		
+    	var positionInList = ((lastDateStopsList.get('childNodes').size() - 1)/2)+1;
+    	
     	Y.Util.renderTemplate('stop.html', {
-    		stopNumber: stopCount,
+    		stopNumber: letters[positionInList],
     		name: poi.display_name,
     		lat: poi.lat,
     		lng: poi.lon

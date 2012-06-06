@@ -53,8 +53,8 @@ function(Y){
 		      	// Format the date and output it to a DOM
 		     	// element.
 		     	newDate = dtdate.format(newDate, {format: "%d %B"});
-		      
-		      	Y.Util.renderTemplate('date.html', {date: newDate}, function(html){	
+		       	var nextDay = getNextDay();
+		      	Y.Util.renderTemplate('date.html', {date: newDate, className: 'date-'+nextDay}, function(html){	
 					Y.one('#itinerary').insertBefore(html, Y.one('#controls'));
 					//Pop the last instance of the stops div
 					var node = Y.all('.stops').pop();
@@ -62,6 +62,7 @@ function(Y){
 					var target = new Y.DD.Drop({
 			            node: node
 			        });
+					attachEvents();
 				});
 				
 				calendar.hide();
@@ -146,10 +147,11 @@ function(Y){
 	    return this.match(suffix+"$") == suffix;
 	};
 
-	// Adds tooltip
-	$('.delete-link').tooltip();
-
-	$('.btn-seeonmap').click(function() {
+	/*
+	$('#itinerary').delegate('.delete-link', 'hover', function() {
+		$(this).tooltip();
+	})
+	$('#itinerary').delegate('.btn-seeonmap').click(function() {
 		var classes = $(this).attr('class').split(" "),
 			classSelected;
 		for(var i=0; i<classes.length; i++) {
@@ -158,8 +160,9 @@ function(Y){
 			}
 		}
 		
-		drawRoute(getLocations("."+classSelected));
-	});
+		drawRoute(getLocations("."+classSelected));		
+	});*/
+	
 
 	/*
 	 * Draw the route on the map.
@@ -168,8 +171,23 @@ function(Y){
 	 */
 	var locations = [],
 	
+		attachEvents = function() {
+			$('.delete-link').tooltip();
+
+			$('.btn-seeonmap').click(function() {
+				var classes = $(this).attr('class').split(" "),
+					classSelected;
+				for(var i=0; i<classes.length; i++) {
+					if(classes[i].startsWith('date-')) {
+						classSelected = classes[i];
+					}
+				}
+
+				drawRoute(getLocations("."+classSelected));
+			});			
+		},
+	
 		handleResult = function(data) {
-			alert(data);
 		},
 	
 		drawRoute = function(locations) {
@@ -233,6 +251,10 @@ function(Y){
 			});
 		},*/
 		
+		getNextDay = function() {
+			return $('#datesAndStops .date').length + 1;
+		},
+		
 		drawOverlay = function(points) {
 			MQA.withModule('shapes', function() {
 
@@ -264,4 +286,5 @@ function(Y){
 			return locsArray;
 		};
 	
+	attachEvents();
 }); 

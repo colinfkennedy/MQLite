@@ -1,11 +1,13 @@
 Y_Main.use(
+'io-base',
 'mqlite-map',
 'calendar',
 'itinerary-drag-and-drop',
 'util',
 function(Y){
 	"use strict";	
-	var addDayButton = Y.one('button#addDay'),
+	var _app = Y_Main.namespace('mqlite').$mqliteApp,
+		addDayButton = Y.one('button#addDay'),
 		calendarDiv = Y.one('#calendar'),
 		calendar;
 				
@@ -59,6 +61,7 @@ function(Y){
     //Add Stop Button
     Y.one('button#addStop').on('click', function(){
     	Y.one('input#addStopInput').show();
+	
     	var lastDateStopsList = Y.all('.stops').pop();
     	Y.Util.renderTemplate('stop.html', {name: 'New Stop!'}, function(html){
 			lastDateStopsList.appendChild(html);
@@ -79,6 +82,14 @@ function(Y){
     	
     });
     
+    //Add key events to the Add Stop Input Box
+    $('input#addStopInput').keypress('key', function(event){
+		if ( event.which == 13 ) {
+	     	_app.navigate( '/itinerary/' + this.value);
+    		_app.set('activeInput', this); 
+	   	}
+    });    
+        
 	$('.delete-link').tooltip();
 	
 	/*

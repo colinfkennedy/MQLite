@@ -44,6 +44,20 @@ Y_Main.use('app', 'handlebars', function(Y){
 	    	 	}
 	    	 });	    	
 	    }, 
+	    handleItinerarySearch: function (req) {
+	    	 var request = Y.io("/api/open_maps" + req.path, {
+	    	 	on: {
+	    	 		success: function(transactionid, response, arguments){
+	    	 		    _app.set('search', Y.JSON.parse(response.responseText));
+	    	 			var html = _templates.searchResults({ 
+	    	 			    results: _app.get('search')
+	    	 			});
+	    	 			
+	    	 			Y.one("#itinerary-search-results").setHTML(html);
+	    	 		}
+	    	 	}
+	    	 });	    	
+	    }, 
 	    handleDirections: function(req) {
 	        var request = Y_Main.io("/api/open_maps" + req.path, {
 	            on: {
@@ -65,7 +79,8 @@ Y_Main.use('app', 'handlebars', function(Y){
 	            value: [
 	                {path: '/',                  callback: 'hendleIndex'},
 	                {path: '/search/:query',     callback: 'handleSearch'}, 
-	                {path: '/directions/:query', callback: 'handleDirections'}
+	                {path: '/directions/:query', callback: 'handleDirections'},
+	                {path: '/itinerary/:query', callback: 'handleItinerarySearch'}
 	            ]
 	        }, 
 	        search: {

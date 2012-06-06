@@ -18,6 +18,7 @@ MQLite::Application.routes.draw do
   scope "/api" do    
     get "mapquest/search/:query" => "api::mapquest#search"
     get "open_maps/search/:query" => "api::open_mapquest#search"
+    get "open_maps/itinerary/:query" => "api::open_mapquest#itinerary"
     get "open_maps/directions/:query" => "api::open_mapquest#directions", :query => /[^\/]*/
   end
 

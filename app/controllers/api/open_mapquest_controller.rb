@@ -11,6 +11,11 @@ class Api::OpenMapquestController < ApplicationController
      render :json => open_maps_response.body
   end 
   
+  def itinerary 
+     open_maps_response = @open_maps_service.search(CGI.escape(params[:query]))
+     render :json => open_maps_response.body
+  end 
+  
   def autocomplete
     begin 
       open_maps_response = @open_maps_service.search(CGI.escape(params[:query]))

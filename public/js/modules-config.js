@@ -16,6 +16,12 @@ var Y_Main = YUI({
 		},
 		'mqlite-map-leaflet': {
 			fullpath: '/js/map_leaflet.js'
+		},
+		'itinerary-drag-and-drop': {
+			fullpath: '/js/itineraryDragAndDrop.js'
+		},
+		'util': {
+			fullpath: '/js/util.js'
 		}
 	}
 });

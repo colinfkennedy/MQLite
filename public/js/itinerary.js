@@ -9,7 +9,8 @@ function(Y){
 	var _app = Y_Main.namespace('mqlite').$mqliteApp,
 		addDayButton = Y.one('button#addDay'),
 		calendarDiv = Y.one('#calendar'),
-		calendar;
+		calendar,
+		stopCount = 5;
 				
     //Event Handler
     addDayButton.on('click', function(){
@@ -60,10 +61,32 @@ function(Y){
     
     //Add Stop Button
     Y.one('button#addStop').on('click', function(){
-    	Y.one('input#addStopInput').show();
-	
+    	Y.one('input#addStopInput').show();    	
+    });
+    
+    //Add key events to the Add Stop Input Box
+    $('input#addStopInput').keypress('key', function(event){
+		if ( event.which == 13 ) {
+	     	_app.navigate( '/itinerary/' + this.value);
+    		_app.set('activeInput', this); 
+	   	}
+    });    
+    
+    //Adds a Stop
+    Y.one('#controls').delegate('click', function(){
+        var place_id = this.get('id').replace('place_id_', ''), 
+            poi = _app.getSearchByPlaceId(place_id); 
+        
+        stopCount++;
+            
+    	//Add it to the list    	
     	var lastDateStopsList = Y.all('.stops').pop();
-    	Y.Util.renderTemplate('stop.html', {name: 'New Stop!'}, function(html){
+    	Y.Util.renderTemplate('stop.html', {
+    		stopNumber: stopCount,
+    		name: poi.display_name,
+    		lat: poi.lat,
+    		lng: poi.lon
+    	}, function(html){
 			lastDateStopsList.appendChild(html);
 			//Pop the last instance of the date
 			var node = Y.all('.stop').pop();
@@ -80,15 +103,13 @@ function(Y){
 	        });
 		});
     	
-    });
-    
-    //Add key events to the Add Stop Input Box
-    $('input#addStopInput').keypress('key', function(event){
-		if ( event.which == 13 ) {
-	     	_app.navigate( '/itinerary/' + this.value);
-    		_app.set('activeInput', this); 
-	   	}
-    });    
+    	//Hide search box
+    	Y.one('input#addStopInput').hide();   
+    	
+    	//Remove the results
+    	Y.one('#itinerary-search-results').get('childNodes').remove(true);
+    	
+    }, 'li');
         
 	$('.delete-link').tooltip();
 	

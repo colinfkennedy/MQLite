@@ -14,6 +14,7 @@ MQLite::Application.routes.draw do
 # get "directions/:query" => "directions#search" #TODO
 
   get "itinerary" => "itinerary#index"
+  get "itinerary/getpoints/:query" => "itinerary#getpoints"
 
   scope "/api" do    
     get "mapquest/search/:query" => "api::mapquest#search"

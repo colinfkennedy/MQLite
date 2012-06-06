@@ -16,4 +16,12 @@ class ItineraryController < ApplicationController
     render :layout => 'itinerary'
   end
      
+  def getpoints
+    @latLngs = params[:query].split(/;/)
+    @locationsArray = Array.new
+    @latLngs.each { |x| @locationsArray << {:lat => x.split(/,/)[0], :lng => x.split(/,/)[0]} }
+    puts @locationsArray
+    render :json => @locationsArray
+  end
+  
 end

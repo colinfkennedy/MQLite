@@ -113,60 +113,142 @@ function(Y){
     	Y.one('#itinerary-search-results-container').hide();   
     	
     }, 'li');
-        
+
+
+    //Create simple targets for the 2 lists.
+    var uls = Y.Node.all('#datesAndStops .date .stops');
+    uls.each(function(v, k) {
+        var tar = new Y.DD.Drop({
+            node: v
+        });
+    });
+    
+
+	// RAFAEL
+	String.prototype.startsWith = function(prefix) {
+	    return this.indexOf(prefix) === 0;
+	}
+
+	String.prototype.endsWith = function(suffix) {
+	    return this.match(suffix+"$") == suffix;
+	};
+
+	// Adds tooltip
 	$('.delete-link').tooltip();
-	
-	/*
-	 *	Calculates directions on map.
-	 */
-	var io,delegate,routeController,
-		_drawRoute = function() {	
-		MQA.withModule('route','routeio', function() {
-			io = new MQA.RouteIO(MQROUTEURL,true);
-			delegate = new MQA.Route.RouteDelegate();
 
-			delegate.customizeRibbon = function(ribbonLineOverlay) {
-				ribbonLineOverlay.color = "#6C2DC7";
-				ribbonLineOverlay.fillColor = "#6C2DC7";
-				ribbonLineOverlay.colorAlpha = .8;
-				ribbonLineOverlay.borderWidth = 14;
-			};
-		
-			routeController = map.createRoute(delegate, io);
-			routeController.draggable = true;
-			routeController.poidrag = true;
-		
-			_route(io);
-		});
-	},
-	
-	_route = function(io, newLocations) {
-		var firstParam,
-			directionsLocations,
-			tmpMapState;
-
-		if(!newLocations) {
-			tmpMapState = routeController.delegate.virtualMapState(map);
-		} else {
-			tmpMapState = mapState;
+	$('.btn-seeonmap').click(function() {
+		var classes = $(this).attr('class').split(" "),
+			classSelected;
+		for(var i=0; i<classes.length; i++) {
+			if(classes[i].startsWith('date-')) {
+				classSelected = classes[i];
+			}
 		}
 		
-		firstParam = {locations: [
-			{lat: 53.34804, lng: -6.248328},
-			{lat: 53.356711, lng: -6.380336}
-		]};
+		drawRoute(getLocations("."+classSelected));
+	});
 
-		io.route(
-			firstParam,
-			{timeout: 10000},
-			function(results){
-				var status = results.info.statuscode;
-				if(status == 0) {
-					routeController.setRouteData(results.route);
+	/*
+	 * Draw the route on the map.
+	 * @param locations {String} of latLng's 
+	 *    ex. lat;lng|lat;lng|lat;lng
+	 */
+	var locations = [],
+	
+		handleResult = function(data) {
+			alert(data);
+		},
+	
+		drawRoute = function(locations) {
+			MQA.withModule('directions', function() {
+			    map.addRoute(
+					locations,
+					{ribbonOptions:{ribbonDisplay:{color:"blue",colorAlpha:.50}}},
+					handleResult
+				);
+		  	});			
+			
+			/*var locs = locations.split(';'),
+				latLng, lat, lng, locsArray = [];
+			if(locs && locs.length >= 2) {
+				for(var i=0; i<locs.length; i++) {
+					latLng = locs[i].split(',');
+					lat = latLng[0];
+					lng = latLng[1];
+					locsArray.push({latLng: {lat: lat,lng: lng}});
+				}
+				MQA.withModule('directions', function() {
+				    map.addRoute(
+						locsArray,
+						{ribbonOptions:{ribbonDisplay:{color:"#000000",colorAlpha:.33}}}
+					);
+			  	});			
+			} else {
+				alert('Inform at least 2 locations');
+			}*/
+		},
+		
+		/*getPoints = function(locations) {
+			var myurl = "http://www.mapquestapi.com/directions/v1/route?"+ 
+				"key=Fmjtd|luua2d0a2h%2Crn%3Do5-hf7n1&" +
+				"ambiguities=ignore&" +
+				"avoidTimedConditions=false&" +
+				"doReverseGeocode=true&" +
+				"inFormat=json&" +
+				"outFormat=json&" +
+				"routeType=fastest&" +
+				"timeType=1&" +
+				"enhancedNarrative=false&" +
+				"shapeFormat=raw&" +
+				"generalize=0&" +
+				"locale=en_US&" +
+				"unit=m";
+			$.ajax({
+				url: myurl,
+				dataType: "jsonp",
+				crossDomain:true,
+				jsonpCallback: "renderAdvancedNarrative",
+				data: {
+					location: locations
+				},
+				success: function(data, textStatus, jqXHR) {
+					alert(data.route.locationSequence);
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(xhr + ajaxOptions + thrownError);
 				}
 			});
-	};
-	
-	_drawRoute();
+		},*/
+		
+		drawOverlay = function(points) {
+			MQA.withModule('shapes', function() {
+
+				var line = new MQA.LineOverlay();
+				line.setShapePoints([39.633041, -105.318492, 39.847136, -104.674787]);
+				map.addShape(line);
+			});
+		},
+		
+		getLocations = function(cssDateClass) {
+			var latLng, lat, lng, locsArray = [];
+			
+			$(cssDateClass).each(function() {
+				var locationsByDay = [];
+				$(this).find('.stop_location').each(function() {
+					locationsByDay.push($(this).attr('value'));
+				});
+				
+				if(locationsByDay && locationsByDay.length >= 2) {
+					for(var i=0; i<locationsByDay.length; i++) {
+						latLng = locationsByDay[i].split(',');
+						lat = parseFloat(latLng[0]);
+						lng = parseFloat(latLng[1]);
+						locsArray.push({latLng: {lat: lat,lng: lng}});
+					}
+				}
+			});
+			
+			return locsArray;
+		};
 	
 }); 

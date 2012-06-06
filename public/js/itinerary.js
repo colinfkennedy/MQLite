@@ -8,6 +8,7 @@ function(Y){
 	var addDayButton = Y.one('button#addDay'),
 		calendarDiv = Y.one('#calendar'),
 		calendar;
+				
     //Event Handler
     addDayButton.on('click', function(){
 		
@@ -41,12 +42,22 @@ function(Y){
 		     	newDate = dtdate.format(newDate, {format: "%d %B"});
 		      
 		      	Y.Util.renderTemplate('date.html', {date: newDate}, function(html){
-					Y.one('#itinerary').insertBefore(html, Y.one('#addDateAndCalendar'));
+					Y.one('#itinerary').insertBefore(html, Y.one('#controls'));
 				});
 				
 				calendar.hide();
 		    });
 		}		
+    });
+    
+    //Add Stop Button
+    Y.one('button#addStop').on('click', function(){
+    	Y.one('input#addStopInput').show();
+    	var lastDateStopsList = Y.all('.stops').pop();
+    	Y.Util.renderTemplate('stop.html', {name: 'New Stop!'}, function(html){
+			lastDateStopsList.appendChild(html);
+		});
+    	
     });
     
 	$('.delete-link').tooltip();

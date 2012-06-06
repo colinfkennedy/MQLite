@@ -92,11 +92,13 @@ function(Y){
             
     	//Add it to the list    	
     	var lastDateStopsList = Y.all('.stops').pop();
+    	
+    	var numberOfStops = $('.date-2 .stop').length;
     		
-    	var positionInList = ((lastDateStopsList.get('childNodes').size() - 1)/2)+1;
+    	var thisStop = numberOfStops+1;
     	
     	Y.Util.renderTemplate('stop.html', {
-    		stopNumber: letters[positionInList],
+    		stopNumber: letters[thisStop],
     		name: poi.display_name,
     		lat: poi.lat,
     		lng: poi.lon

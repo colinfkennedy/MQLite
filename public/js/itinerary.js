@@ -288,5 +288,7 @@ function(Y){
 			return locsArray;
 		};
 	
+	
+	drawRoute(getLocations(".date-1"));
 	attachEvents();
 }); 

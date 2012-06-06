@@ -41,8 +41,14 @@ function(Y){
 		     	// element.
 		     	newDate = dtdate.format(newDate, {format: "%d %B"});
 		      
-		      	Y.Util.renderTemplate('date.html', {date: newDate}, function(html){
+		      	Y.Util.renderTemplate('date.html', {date: newDate}, function(html){	
 					Y.one('#itinerary').insertBefore(html, Y.one('#controls'));
+					//Pop the last instance of the stops div
+					var node = Y.all('.stops').pop();
+					//Add droppable event to it.
+					var target = new Y.DD.Drop({
+			            node: node
+			        });
 				});
 				
 				calendar.hide();
@@ -56,6 +62,19 @@ function(Y){
     	var lastDateStopsList = Y.all('.stops').pop();
     	Y.Util.renderTemplate('stop.html', {name: 'New Stop!'}, function(html){
 			lastDateStopsList.appendChild(html);
+			//Pop the last instance of the date
+			var node = Y.all('.stop').pop();
+			//Add draggable event to it.
+			var dd = new Y.DD.Drag({
+            node: node,
+            target: {
+                padding: '0 0 0 20'
+            }
+	        }).plug(Y.Plugin.DDProxy, {
+	            moveOnEnd: false
+	        }).plug(Y.Plugin.DDConstrained, {
+	            constrain2node: '#play'
+	        });
 		});
     	
     });
